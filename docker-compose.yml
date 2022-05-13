@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  rabbitmq:
+    image: 'rabbitmq:3.9.17-management-alpine'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+  sender:
+    image: c-app
+    container_name: c-app
+    ports:
+      - "6000:6000"
+    depends_on: 
+      - rabbitmq
+  
+  reciever:
+    image: py-app
+    container_name: py-app
+    ports:
+      - "7000:7000"
+    depends_on: 
+      - rabbitmq
+    volumes:
+      - ./logs:/app/logs
