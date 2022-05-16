@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY ./app/ /app
 
-RUN cd /app && mkdir build && cd build && \
-    cmake ../ && cmake --build .
+# RUN cd /app && mkdir build && cd build && \
+#     cmake ../ && cmake --build .
 
 EXPOSE 8000
 
-ENTRYPOINT ["/app/build/sender"]
-# CMD tail -f /dev/null
+# ENTRYPOINT ["/app/build/sender"]
+CMD tail -f /dev/null

@@ -14,7 +14,7 @@ if not os.path.exists("/app/logs"):
 
 sleepTime = 30
 logger = logging.getLogger("py_app")
-logger.error(' [*] Sleeping for ', sleepTime, ' seconds.')
+logger.error(' [*] Sleeping for '+str(sleepTime)+' seconds.')
 time.sleep(sleepTime)
 
 def on_message(channel, method_frame, header_frame, body):
@@ -43,7 +43,7 @@ def on_message(channel, method_frame, header_frame, body):
         str(body.decode()))
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
-print(' [*] Connecting to server ...')
+logger.error(' [*] Connecting to server ...')
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
 channel = connection.channel()
 channel.queue_declare(queue='msg_queue', durable=True)

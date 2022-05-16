@@ -2,7 +2,7 @@ FROM gcc
 
 RUN apt-get update -yqq \
     && apt-get install -yqq --no-install-recommends software-properties-common\
-    cmake zip unzip libssl-dev\
+    nano cmake zip unzip libssl-dev\
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
@@ -16,4 +16,5 @@ RUN wget https://github.com/alanxz/rabbitmq-c/archive/refs/tags/v${RABBITMQ_C_VE
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local .. && \
     cmake --build . --target install && \
     rm /v${RABBITMQ_C_VERSION}.zip && \
-    rm -r /rabbitmq-c-${RABBITMQ_C_VERSION}
+    rm -r /rabbitmq-c-${RABBITMQ_C_VERSION} && \
+    ldconfig
