@@ -38,17 +38,21 @@ def on_message(channel, method_frame, header_frame, body):
     # logger.error("body.decode(): [type]="+str(type(body.decode()))+"\n"+str(body.decode()))
 
     headers = header_frame.headers
-    logger.error("headers = "+str(headers))
-    for key in headers.keys():
-        logger.error("key="+str(key))
-        logger.error("type="+str(type(key)))
-    
-    for value in headers.values():
-        logger.error("key="+str(value))
-        logger.error("type="+str(type(value)))
+    if headers:
+        logger.error("headers = "+str(headers))
+        for key in headers.keys():
+            logger.error("key="+str(key))
+            logger.error("type="+str(type(key)))
+        
+        for value in headers.values():
+            logger.error("key="+str(value))
+            logger.error("type="+str(type(value)))
 
-    image = Image.open(io.BytesIO(body))
-    image.save("/app/logs/recieved_image.jpg")
+        if header_frame.content_type == "image/jpeg":
+            image = Image.open(io.BytesIO(body))
+            image.save("/app/logs/recieved_image.jpg")
+    else:
+        logger.error("body = "+str(body))
 
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
