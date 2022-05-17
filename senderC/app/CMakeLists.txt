@@ -12,3 +12,6 @@ target_link_libraries(examples-common PRIVATE rabbitmq::rabbitmq)
 
 add_executable(amqp_producer amqp_producer.c)
 target_link_libraries(amqp_producer PRIVATE examples-common rabbitmq::rabbitmq)
+
+add_executable(image_sender image_sender.c)
+target_link_libraries(image_sender PRIVATE examples-common rabbitmq::rabbitmq)

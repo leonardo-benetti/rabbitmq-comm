@@ -2,6 +2,8 @@ import pika
 import time
 import os
 import logging
+import io
+from PIL import Image
 
 logging.basicConfig(
 	filename='/app/logs/py-app.log',
@@ -21,26 +23,33 @@ def on_message(channel, method_frame, header_frame, body):
     logger.error(" [x] ------- Received !")
 
     # prints channel info
-    logger.error("channel: [type]="+str(type(channel))+"\n"+
-        str(channel))
+    # logger.error("channel: [type]="+str(type(channel))+"\n"+str(channel))
 
     # prints method_frame info
-    logger.error("method_frame: [type]="+str(type(method_frame))+"\n"+
-        str(method_frame))
-
-    logger.error("method_frame.delivery_tag: [type]="+str(type(method_frame.delivery_tag))+"\n"+
-        str(method_frame.delivery_tag))
+    # logger.error("method_frame: [type]="+str(type(method_frame))+"\n"+str(method_frame))
+    # logger.error("method_frame.delivery_tag: [type]="+str(type(method_frame.delivery_tag))+"\n"+str(method_frame.delivery_tag))
 
     # prints header_frame info
-    logger.error("header_frame: [type]="+str(type(header_frame))+"\n"+
-        str(header_frame))
+    # logger.error("header_frame: [type]="+str(type(header_frame))+"\n"+str(header_frame))
+    # logger.error("header_frame.__dict__: " + str(header_frame.__dict__))
 
     # print body info
+    # logger.error("body: [type]="+str(type(body))+"\n"+str(body))
+    # logger.error("body.decode(): [type]="+str(type(body.decode()))+"\n"+str(body.decode()))
+
+    headers = header_frame.headers
+    logger.error("headers = "+str(headers))
+    for key in headers.keys():
+        logger.error("key="+str(key))
+        logger.error("type="+str(type(key)))
     
-    logger.error("body: [type]="+str(type(body))+"\n"+
-        str(body))
-    logger.error("body.decode(): [type]="+str(type(body.decode()))+"\n"+
-        str(body.decode()))
+    for value in headers.values():
+        logger.error("key="+str(value))
+        logger.error("type="+str(type(value)))
+
+    image = Image.open(io.BytesIO(body))
+    image.save("/app/logs/recieved_image.jpg")
+
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 logger.error(' [*] Connecting to server ...')
